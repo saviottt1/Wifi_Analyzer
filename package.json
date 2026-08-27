@@ -1,0 +1,53 @@
+{
+  "name": "wifi-scanner",
+  "version": "2.0.0",
+  "main": "main.js",
+  "scripts": {
+    "start": "node server.js",
+    "local-scanner": "node local-scanner.js",
+    "electron:start": "electron .",
+    "build:win": "electron-builder --win",
+    "build:mac": "electron-builder --mac",
+    "build:linux": "electron-builder --linux",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "build": {
+    "appId": "com.saviottt1.wifiscanner",
+    "productName": "Wi-Fi Scanner Pro",
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "maintainer": "YOUR NAME <YOUR EMAIL>"
+    },
+    "mac": {
+      "target": "dmg"
+    }
+  },
+  "keywords": [
+    "wifi",
+    "scanner",
+    "network",
+    "analyzer",
+    "electron"
+  ],
+  "author": "Don Savio Thomas <donsavio1one@gmail.com>",
+  "license": "ISC",
+  "description": "Wi-Fi Scanner Pro — Render-hosted UI with local Wi-Fi scanning agent",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "electron": "^41.7.1",
+    "electron-builder": "^26.15.3"
+  },
+  "homepage": "saviottt"
+}

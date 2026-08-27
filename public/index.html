@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wi-Fi Scanner – Real-Time Network Monitor</title>
+    <meta name="description"
+        content="Real-time Wi-Fi access point scanner with live signal strength monitoring. Scan nearby networks from your browser.">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="background-elements">
+        <div class="glow-orb orb-1"></div>
+        <div class="glow-orb orb-2"></div>
+        <div class="glow-orb orb-3"></div>
+    </div>
+
+    <div class="app-container">
+        <header>
+            <div class="header-left">
+                <div class="logo" id="logoIcon">
+                    <svg class="radar-svg" viewBox="0 0 40 40" width="40" height="40">
+                        <circle cx="20" cy="20" r="16" fill="none" stroke="rgba(20,184,166,0.15)" stroke-width="1.5" />
+                        <circle cx="20" cy="20" r="10" fill="none" stroke="rgba(20,184,166,0.25)" stroke-width="1.5" />
+                        <circle cx="20" cy="20" r="4" fill="none" stroke="rgba(20,184,166,0.4)" stroke-width="1.5" />
+                        <line x1="20" y1="20" x2="20" y2="4" stroke="var(--accent-teal)" stroke-width="2"
+                            stroke-linecap="round" class="radar-sweep" />
+                        <circle cx="20" cy="20" r="2.5" fill="var(--accent-teal)" />
+                    </svg>
+                </div>
+                <div>
+                    <h1>Wifi Analyzer<span>Pro</span></h1>
+                    <p class="subtitle">Real-Time RF Environment Monitor</p>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="status-indicator" id="statusIndicator">
+                    <span class="pulse-dot" id="pulseDot"></span>
+                    <span id="connectionStatus">Initializing...</span>
+                </div>
+                <div class="stats-row">
+                    <div class="stat-box">
+                        <span class="stat-label">APs Found</span>
+                        <span class="stat-value" id="apCount">0</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">Last Scan</span>
+                        <span class="stat-value stat-value-small" id="lastScan">--</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">Scan #</span>
+                        <span class="stat-value stat-value-small" id="scanCount">0</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Scanner Status Bar -->
+        <div class="scanner-status-bar" id="scannerStatusBar">
+            <div class="scanner-status-left">
+                <div class="scanner-status-dot" id="scannerDot"></div>
+                <span class="scanner-status-text" id="scannerStatusText">Local Wi-Fi Scanner: Checking...</span>
+            </div>
+            <div class="scanner-status-right">
+                <button class="demo-toggle-btn" id="demoToggleBtn" title="Toggle Demo Mode">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                        <path d="M2 17l10 5 10-5" />
+                        <path d="M2 12l10 5 10-5" />
+                    </svg>
+                    <span>Demo Mode</span>
+                </button>
+                <button class="scan-now-btn" id="scanNowBtn" title="Scan Wi-Fi networks now">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M1 1l4 4m14-4l-4 4" />
+                        <path d="M5 12a7 7 0 0 1 14 0" />
+                        <path d="M8.5 12a3.5 3.5 0 0 1 7 0" />
+                        <circle cx="12" cy="12" r="1" fill="currentColor" />
+                    </svg>
+                    <span>Scan Wi-Fi</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Demo Mode Banner -->
+        <div class="demo-banner" id="demoBanner">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                <path d="M2 17l10 5 10-5" />
+                <path d="M2 12l10 5 10-5" />
+            </svg>
+            <span><strong>DEMO MODE</strong> — Showing sample data for UI testing. These are <strong>NOT</strong> real
+                Wi-Fi networks.</span>
+            <button class="demo-banner-close" id="demoBannerClose" title="Exit Demo Mode">&times;</button>
+        </div>
+
+        <!-- Instructions Panel (shown when scanner is not connected) -->
+        <div class="instructions-panel" id="instructionsPanel">
+            <div class="instructions-icon">
+                <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <circle cx="12" cy="12" r="10" />
+                    <line x1="12" y1="16" x2="12" y2="12" />
+                    <line x1="12" y1="8" x2="12.01" y2="8" />
+                </svg>
+            </div>
+            <h2>Local Wi-Fi Scanner Required</h2>
+            <p>Wi-Fi scanning requires the local scanner agent to be running on your computer.<br>
+                The Render server cannot access your computer's Wi-Fi adapter.</p>
+            <div class="instructions-steps">
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-content">
+                        <strong>Clone the repository</strong>
+                        <code>git clone https://github.com/saviottt1/Wifi_Analyzer.git</code>
+                    </div>
+                </div>
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-content">
+                        <strong>Run One-Click Launcher</strong>
+                        <span>Double-click <code>start-scanner.bat</code> (Windows) or <code>./start-scanner.sh</code> (Linux/Mac)</span>
+                    </div>
+                </div>
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-content">
+                        <strong>Return to this page</strong>
+                        <span>The scanner will connect automatically.</span>
+                    </div>
+                </div>
+            </div>
+            <p class="instructions-hint">Tip: Place a shortcut to <code>start-scanner.bat</code> in your Windows Startup folder (<code>shell:startup</code>) to run automatically on boot!</p>
+        </div>
+
+        <main>
+            <div class="toolbar">
+                <div class="search-box">
+                    <svg class="search-icon" viewBox="0 0 24 24" width="18" height="18" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8" />
+                        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                    </svg>
+                    <input type="text" id="searchInput" placeholder="Filter by SSID, MAC, Channel...">
+                </div>
+                <div class="toolbar-actions">
+                    <div class="sort-options">
+                        <button class="active" data-sort="signal">Signal</button>
+                        <button data-sort="name">Name</button>
+                        <button data-sort="channel">Channel</button>
+                    </div>
+                    <button class="select-mode-btn" id="selectModeBtn" title="Toggle selection mode">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <polyline points="9 11 12 14 22 4" />
+                            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+                        </svg>
+                        <span>Select</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="networks-grid" id="networksGrid">
+                <div class="empty-state" id="emptyState">
+                    <div class="spinner"></div>
+                    <p>Waiting for Wi-Fi scan data...</p>
+                </div>
+            </div>
+        </main>
+
+        <!-- Floating Export Action Bar -->
+        <div class="export-fab" id="exportFab">
+            <div class="fab-inner">
+                <button class="fab-action-btn" id="selectAllBtn" title="Select all visible">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="18" height="18" rx="2" />
+                        <polyline points="9 11 12 14 22 4" />
+                    </svg>
+                    <span>All</span>
+                </button>
+                <button class="fab-action-btn" id="deselectAllBtn" title="Deselect all">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="18" height="18" rx="2" />
+                    </svg>
+                    <span>None</span>
+                </button>
+                <div class="fab-count">
+                    <span id="selectedCount">0</span> selected
+                </div>
+                <button class="fab-export-btn" id="exportBtn">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                        <polyline points="7 10 12 15 17 10" />
+                        <line x1="12" y1="15" x2="12" y2="3" />
+                    </svg>
+                    Export JSON
+                </button>
+            </div>
+        </div>
+
+        <!-- Export Modal -->
+        <div class="modal-overlay" id="exportModal">
+            <div class="modal-card">
+                <div class="modal-header">
+                    <h2>Export Survey Fingerprint</h2>
+                    <button class="modal-close" id="modalClose">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-field">
+                        <label for="surveyIdInput">Survey ID</label>
+                        <input type="text" id="surveyIdInput" placeholder="e.g. SUR-MTB69RQ0">
+                        <small>Leave blank to auto-generate</small>
+                    </div>
+                    <div class="modal-field">
+                        <label for="engineerInput">Engineer / Technician</label>
+                        <input type="text" id="engineerInput" placeholder="e.g. Field Tech" value="Field Tech">
+                    </div>
+                    <div class="modal-field">
+                        <label for="buildingIdInput">Building ID</label>
+                        <input type="text" id="buildingIdInput" placeholder="e.g. MAIN-BLOCK">
+                    </div>
+                    <div class="modal-field">
+                        <label for="floorIdInput">Floor ID</label>
+                        <input type="text" id="floorIdInput" placeholder="e.g. GROUND">
+                    </div>
+                    <div style="display:flex; gap:16px;">
+                        <div class="modal-field" style="flex:1;">
+                            <label for="coordXInput">X Coordinate</label>
+                            <input type="number" id="coordXInput" placeholder="e.g. 245.6" step="any">
+                        </div>
+                        <div class="modal-field" style="flex:1;">
+                            <label for="coordYInput">Y Coordinate</label>
+                            <input type="number" id="coordYInput" placeholder="e.g. 381.2" step="any">
+                        </div>
+                    </div>
+                    <div class="modal-preview">
+                        <h3>Selected APs (<span id="previewCount">0</span>)</h3>
+                        <div class="preview-list" id="previewList"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="modal-cancel-btn" id="modalCancelBtn">Cancel</button>
+                    <button class="modal-download-btn" id="modalDownloadBtn">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                            <polyline points="7 10 12 15 17 10" />
+                            <line x1="12" y1="15" x2="12" y2="3" />
+                        </svg>
+                        Download JSON
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
